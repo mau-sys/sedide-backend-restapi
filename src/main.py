@@ -1,10 +1,13 @@
+from cgi import test
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 
 #from . import crud, models, schemas
 #from .database import SessionLocal, engine
 
-import crud, models, schemas
+import crud
+import models
+import schemas
 from database import SessionLocal, engine
 
 models.Base.metadata.create_all(bind=engine)
@@ -19,6 +22,7 @@ def get_db():
         yield db
     finally:
         db.close()
+
 
 '''
 @app.post("/users/", response_model=schemas.User)
@@ -56,32 +60,37 @@ def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return items
 
 '''
-#-----------------------------------------
+# -----------------------------------------
 #   THESE ARE FROM MY PROJECT
-#-----------------------------------------
+# -----------------------------------------
+
 
 @app.get("/")
 def hello_world():
     return "helloWorld"
 
-@app.get("/roles/{role_id}", response_model=schemas.Role)
+
+@app.get("/rol/{role_id}", response_model=schemas.Role)
 def read_role(role_id: int, db: Session = Depends(get_db)):
     role = crud.get_role(db, role_id=role_id)
     if role is None:
         raise HTTPException(status_code=404, detail="User not found")
     return role
 
+
 @app.get("/roles/", response_model=list[schemas.Role])
 def read_roles(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     roles = crud.get_roles(db, skip=skip, limit=limit)
     return roles
 
-@app.post("/roles/", response_model=schemas.Role)
+
+@app.post("/rol/", response_model=schemas.Role)
 def create_role(role: schemas.Role, db: Session = Depends(get_db)):
     #db_role = crud.get_user_by_email(db, email=user.email)
     return crud.create_role(db=db, role=role)
 
-@app.patch("/roles/{role_id}", response_model = schemas.Role)
+
+@app.patch("/rol/{role_id}", response_model=schemas.Role)
 def update_role(
     role_id: int,
     updated_fields: schemas.Role,
@@ -89,32 +98,37 @@ def update_role(
 ):
     return crud.update_role(db, role_id, updated_fields)
 
-@app.delete("/roles/{role_id}")
+
+@app.delete("/rol/{role_id}")
 def delete_role(role_id: int, db: Session = Depends(get_db)):
     role = crud.get_role(db, role_id)
     return crud.delete_role(db=db, role=role)
 
-#-------------------
+# -------------------
 # USER HTTP REQUESTS
-#-------------------
+# -------------------
 
-@app.get("/users/{user_id}", response_model=schemas.User)
+
+@app.get("/user/{user_id}", response_model=schemas.User)
 def read_user(user_id: int, db: Session = Depends(get_db)):
     user = crud.get_user(db, user_id=user_id)
     return user
+
 
 @app.get("/users/", response_model=list[schemas.User])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users = crud.get_users(db, skip=skip, limit=limit)
     return users
 
-@app.post("/users/{role_id}", response_model=schemas.User)
-def create_user(user: schemas.User, role_id: int, db: Session = Depends(get_db)):
+
+@app.post("/user", response_model=schemas.User)
+def create_user(user: schemas.User, db: Session = Depends(get_db)):
     #db_role = crud.get_user_by_email(db, email=user.email)
     #role = crud.get_role(db, role_id=role_id)
-    return crud.create_user(db=db, user=user, role_id=role_id)
+    return crud.create_user(db=db, user=user)
 
-@app.patch("/users/{user_id}", response_model = schemas.User)
+
+@app.patch("/user/{user_id}", response_model=schemas.User)
 def update_user(
     user_id: int,
     updated_fields: schemas.User,
@@ -122,34 +136,39 @@ def update_user(
 ):
     return crud.update_user(db, user_id, updated_fields)
 
-@app.delete("/users/{user_id}")
+
+@app.delete("/user/{user_id}")
 def delete_user(user_id: int, db: Session = Depends(get_db)):
     user = crud.get_user(db, user_id)
     return crud.delete_user(db=db, user=user)
 
 
-#---------------------------
+# ---------------------------
 # PSYCHOLOGIST HTTP REQUESTS
-#---------------------------
+# ---------------------------
 
 
-@app.get("/psychologists/{psychologist_id}", response_model=schemas.Psychologist)
+@app.get("/psychologist/{psychologist_id}", response_model=schemas.Psychologist)
 def read_psychologist(psychologist_id: int, db: Session = Depends(get_db)):
-    db_psychologist = crud.get_psychologist(db, psychologist_id=psychologist_id)
+    db_psychologist = crud.get_psychologist(
+        db, psychologist_id=psychologist_id)
     return db_psychologist
+
 
 @app.get("/psychologists/", response_model=list[schemas.Psychologist])
 def read_psychologists(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     psychologists = crud.get_psychologists(db, skip=skip, limit=limit)
     return psychologists
 
-@app.post("/psychologists/{user_id}", response_model=schemas.Psychologist)
-def create_psychologist(psychologist: schemas.Psychologist, user_id: int, db: Session = Depends(get_db)):
+
+@app.post("/psychologist", response_model=schemas.Psychologist)
+def create_psychologist(psychologist: schemas.Psychologist, db: Session = Depends(get_db)):
     #db_role = crud.get_user_by_email(db, email=user.email)
     #role = crud.get_role(db, role_id=role_id)
-    return crud.create_psychologist(db=db, psychologist=psychologist, user_id=user_id)
+    return crud.create_psychologist(db=db, psychologist=psychologist)
 
-@app.patch("/psychologists/{psychologist_id}", response_model = schemas.Psychologist)
+
+@app.patch("/psychologist/{psychologist_id}", response_model=schemas.Psychologist)
 def update_psychologist(
     psychologist_id: int,
     updated_fields: schemas.Psychologist,
@@ -157,34 +176,38 @@ def update_psychologist(
 ):
     return crud.update_psychologist(db, psychologist_id, updated_fields)
 
-@app.delete("/psychologists/{psychologist_id}")
+
+@app.delete("/psychologist/{psychologist_id}")
 def delete_psychologist(psychologist_id: int, db: Session = Depends(get_db)):
     psychologist = crud.get_psychologist(db, psychologist_id)
     return crud.delete_psychologist(db=db, psychologist=psychologist)
 
 
-#---------------------------
+# ---------------------------
 # PATIENT HTTP REQUESTS
-#---------------------------
+# ---------------------------
 
 
-@app.get("/patients/{patient_id}", response_model=schemas.Patient)
+@app.get("/patient/{patient_id}", response_model=schemas.Patient)
 def read_patient(patient_id: int, db: Session = Depends(get_db)):
     patient = crud.get_patient(db, patient_id=patient_id)
     return patient
+
 
 @app.get("/patients/", response_model=list[schemas.Patient])
 def read_patients(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     patients = crud.get_patients(db, skip=skip, limit=limit)
     return patients
 
-@app.post("/patients/{user_id}/{psychologist_id}/", response_model=schemas.Patient)
-def create_patient(patient: schemas.Patient, user_id: int, psychologist_id: int, db: Session = Depends(get_db)):
+
+@app.post("/patient", response_model=schemas.Patient)
+def create_patient(patient: schemas.Patient, db: Session = Depends(get_db)):
     #db_role = crud.get_user_by_email(db, email=user.email)
     #role = crud.get_role(db, role_id=role_id)
-    return crud.create_patient(db=db, patient=patient, user_id=user_id, psychologist_id=psychologist_id)
+    return crud.create_patient(db=db, patient=patient)
 
-@app.patch("/patients/{patient_id}", response_model = schemas.Patient)
+
+@app.patch("/patient/{patient_id}", response_model=schemas.Patient)
 def update_patient(
     patient_id: int,
     updated_fields: schemas.Patient,
@@ -192,32 +215,39 @@ def update_patient(
 ):
     return crud.update_patient(db, patient_id, updated_fields)
 
-@app.delete("/patients/{patient_id}")
+
+@app.delete("/patient/{patient_id}")
 def delete_patient(patient_id: int, db: Session = Depends(get_db)):
     patient = crud.get_patient(db, patient_id)
     return crud.delete_patient(db=db, patient=patient)
 
-#----------------------------------
+# ----------------------------------
 # DEPRESSIVE DISORDER HTTP REQUESTS
-#----------------------------------
+# ----------------------------------
 
-@app.get("/depressive_disorders/{depressive_disorder_id}", response_model=schemas.Depressive_Disorder)
+
+@app.get("/depressive_disorder/{depressive_disorder_id}", response_model=schemas.Depressive_Disorder)
 def read_depressive_disorder(depressive_disorder_id: int, db: Session = Depends(get_db)):
-    depressive_disorder = crud.get_depressive_disorder(db, depressive_disorder_id=depressive_disorder_id)
+    depressive_disorder = crud.get_depressive_disorder(
+        db, depressive_disorder_id=depressive_disorder_id)
     return depressive_disorder
+
 
 @app.get("/depressive_disorders/", response_model=list[schemas.Depressive_Disorder])
 def read_depressive_disorders(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    depressive_disorders = crud.get_depressive_disorders(db, skip=skip, limit=limit)
+    depressive_disorders = crud.get_depressive_disorders(
+        db, skip=skip, limit=limit)
     return depressive_disorders
 
-@app.post("/depressive_disorders/", response_model=schemas.Depressive_Disorder)
+
+@app.post("/depressive_disorder/", response_model=schemas.Depressive_Disorder)
 def create_depressive_disorder(depressive_disorder: schemas.Depressive_Disorder, db: Session = Depends(get_db)):
     #db_role = crud.get_user_by_email(db, email=user.email)
     #role = crud.get_role(db, role_id=role_id)
     return crud.create_depressive_disorder(db=db, depressive_disorder=depressive_disorder)
 
-@app.patch("/depressive_disorders/{depressive_disorder_id}", response_model = schemas.Depressive_Disorder)
+
+@app.patch("/depressive_disorder/{depressive_disorder_id}", response_model=schemas.Depressive_Disorder)
 def update_depressive_disorder(
     depressive_disorder_id: int,
     updated_fields: schemas.Depressive_Disorder,
@@ -225,19 +255,97 @@ def update_depressive_disorder(
 ):
     return crud.update_depressive_disorder(db, depressive_disorder_id, updated_fields)
 
-@app.delete("/depressive_disorders/{depressive_disorder_id}")
+
+@app.delete("/depressive_disorder/{depressive_disorder_id}")
 def delete_depressive_disorder(depressive_disorder_id: int, db: Session = Depends(get_db)):
-    depressive_disorder = crud.get_depressive_disorder(db, depressive_disorder_id)
-    return crud.delete_depressive_disorder(db=db, patient=depressive_disorder)
+    depressive_disorder = crud.get_depressive_disorder(
+        db, depressive_disorder_id)
+    return crud.delete_depressive_disorder(db=db, depressive_disorder=depressive_disorder)
 
 
-#----------------------------------
+# ----------------------------------
+# PREGUNTA BASE HTTP REQUESTS
+# ----------------------------------
+
+@app.get("/pregunta_base/{pregunta_base_id}", response_model=schemas.Pregunta_Base)
+def read_pregunta_base(pregunta_base_id: int, db: Session = Depends(get_db)):
+    pregunta_base = crud.get_pregunta_base(
+        db, pregunta_base_id=pregunta_base_id)
+    return pregunta_base
+
+
+@app.get("/preguntas_base/", response_model=list[schemas.Pregunta_Base])
+def read_preguntas_base(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    preguntas_base = crud.get_preguntas_base(
+        db, skip=skip, limit=limit)
+    return preguntas_base
+
+
+@app.post("/pregunta_base/", response_model=schemas.Pregunta_Base)
+def create_pregunta_base(pregunta_base: schemas.Pregunta_Base, db: Session = Depends(get_db)):
+    return crud.create_pregunta_base(db=db, pregunta_base=pregunta_base)
+
+
+'''@app.patch("/pregunta_base/{pregunta_base}", response_model=schemas.Depressive_Disorder)
+def update_pregunta_base(
+    depressive_disorder_id: int,
+    updated_fields: schemas.Depressive_Disorder,
+    db: Session = Depends(get_db),
+):
+    return crud.update_depressive_disorder(db, depressive_disorder_id, updated_fields)'''
+
+
+@app.delete("/pregunta_base/{pregunta_base_id}")
+def delete_depressive_disorder(pregunta_base_id: int, db: Session = Depends(get_db)):
+    pregunta_base = crud.get_pregunta_base(
+        db, pregunta_base_id)
+    return crud.delete_pregunta_base(db=db, pregunta_base=pregunta_base)
+
+
+# ----------------------------------
+# TEST HTTP REQUESTS
+# ----------------------------------
+
+@app.get("/test/{test_id}", response_model=schemas.Test)
+def read_test(test_id: int, db: Session = Depends(get_db)):
+    test = crud.get_test(
+        db, test_id=test_id)
+    return test
+
+
+@app.get("/tests/", response_model=list[schemas.Test])
+def read_tests(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    tests = crud.get_tests(
+        db, skip=skip, limit=limit)
+    return tests
+
+
+@app.post("/test/", response_model=schemas.Test)
+def create_test(test: schemas.Test, db: Session = Depends(get_db)):
+    return crud.create_test(db=db, test=test)
+
+
+'''@app.patch("/test/{test}", response_model=schemas.Depressive_Disorder)
+def update_test(
+    depressive_disorder_id: int,
+    updated_fields: schemas.Depressive_Disorder,
+    db: Session = Depends(get_db),
+):
+    return crud.update_depressive_disorder(db, depressive_disorder_id, updated_fields)'''
+
+
+@app.delete("/test/{test_id}")
+def delete_test(test_id: int, db: Session = Depends(get_db)):
+    test = crud.get_test(
+        db, test_id)
+    return crud.delete_pregunta_base(db=db, test=test)
+
+# ----------------------------------
 # DIAGNOSTIC REPORT HTTP REQUESTS
-#----------------------------------
+# ----------------------------------
 
 
-
-@app.get("/diagnostic_reports/{diagnostic_report_id}", response_model=schemas.Diagnostic_Report)
+'''@app.get("/diagnostic_reports/{diagnostic_report_id}", response_model=schemas.Diagnostic_Report)
 def read_diagnostic_report(diagnostic_report_id: int, db: Session = Depends(get_db)):
     diagnostic_report = crud.get_psychologist(db, diagnostic_report_id=diagnostic_report_id)
     return diagnostic_report
@@ -265,3 +373,4 @@ def update_diagnostic_report(
 def delete_diagnostic_report(diagnostic_report_id: int, db: Session = Depends(get_db)):
     diagnostic_report = crud.get_diagnostic_report(db, diagnostic_report_id)
     return crud.delete_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
+'''

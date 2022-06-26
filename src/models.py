@@ -31,6 +31,7 @@ class Item(Base):
 # These are my project models
 # ---------------------------------
 
+
 class Role(Base):
     __tablename__ = "role"
 
@@ -41,13 +42,12 @@ class Role(Base):
 
 
 class User(Base):
-    __tablename__= "user"
+    __tablename__ = "user"
 
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(50))
     password = Column(String(10))
     is_active = Column(Boolean, default=True)
-    
     role_id = Column(Integer, ForeignKey("role.id"))
 
     psychologists = relationship("Psychologist", backref="user")
@@ -65,7 +65,8 @@ class Psychologist(Base):
     user_id = Column(Integer, ForeignKey("user.id"))
 
     patients = relationship("Patient", backref="psychologist")
-    diagnostic_reports = relationship("Diagnostic_Report", backref="psychologist")
+    tests = relationship(
+        "Test", backref="test")
 
 
 class Patient(Base):
@@ -84,11 +85,40 @@ class Patient(Base):
     user_id = Column(Integer, ForeignKey("user.id"))
     psychologist_id = Column(Integer, ForeignKey("psychologist.id"))
 
-    diagnostic_reports = relationship("Diagnostic_Report", backref="patient")
+
+class Pregunta_Base(Base):
+    __tablename__ = "pregunta_base"
+
+    id = Column(Integer, primary_key=True, index=True)
+    description = Column(String(900))
+
+    pregunta_tests = relationship("Pregunta_Test", backref="pregunta_base")
+
+class Test(Base):
+    __tablename__ = "test"
+
+    id = Column(Integer, primary_key=True, index=True)
+    date = Column(DateTime, default=datetime.now())
+    patient_id = Column(Integer, ForeignKey("patient.id"))
+    psychologist_id = Column(Integer, ForeignKey("psychologist.id"))
+    observation = Column(String(900))
+    is_active = Column(Boolean, default=True)
+    diagnostic_reports = relationship("Diagnostic_Report", backref="test")
+    pregunta_tests = relationship("Pregunta_Test", backref="test")
+
+class Pregunta_Test(Base):
+    __tablename__ = "pregunta_test"
+
+    id = Column(Integer, primary_key=True, index=True)
+    date = Column(DateTime, default=datetime.now())
+    test_id = Column(Integer, ForeignKey("test.id"))
+    pregunta_base_id = Column(Integer, ForeignKey("pregunta_base.id"))
+    rpta = Column(String(100))
+    is_active = Column(Boolean, default=True)
 
 
 class Depressive_Disorder(Base):
-    __tablename__= "depressive_disorder"
+    __tablename__ = "depressive_disorder"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100))
@@ -96,7 +126,8 @@ class Depressive_Disorder(Base):
     symptom = Column(String(900))
     treatment = Column(String(900))
 
-    diagnostic_reports = relationship("Diagnostic_Report", backref="depressive_disorder")
+    diagnostic_reports = relationship(
+        "Diagnostic_Report", backref="depressive_disorder")
 
 
 class Diagnostic_Report(Base):
@@ -104,7 +135,6 @@ class Diagnostic_Report(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     date = Column(DateTime, default=datetime.now())
-
-    psychologist_id = Column(Integer, ForeignKey("psychologist.id"))
-    patient_id = Column(Integer, ForeignKey("patient.id"))
-    depressive_disorder_id = Column(Integer, ForeignKey("depressive_disorder.id"))
+    test_id = Column(Integer, ForeignKey("test.id"))
+    depressive_disorder_id = Column(
+        Integer, ForeignKey("depressive_disorder.id"))

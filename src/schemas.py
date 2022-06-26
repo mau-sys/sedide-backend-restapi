@@ -1,4 +1,7 @@
+from datetime import datetime
+from typing import Optional
 from pydantic import BaseModel, EmailStr
+
 
 '''
 class ItemBase(BaseModel):
@@ -39,7 +42,7 @@ class User(UserBase):
 # ---------------------------------
 
 class Role(BaseModel):
-    #id: Optional[int]
+    id:  Optional[int]
     title: str
 
     class Config:
@@ -48,6 +51,7 @@ class Role(BaseModel):
 
 class User(BaseModel):
     #username: EmailStr
+    id:  Optional[int]
     username: str
     password: str
     is_active: bool
@@ -60,6 +64,7 @@ class User(BaseModel):
 
 
 class Psychologist(BaseModel):
+    id:  Optional[int]
     first_name: str
     last_name: str
     email: str
@@ -72,6 +77,7 @@ class Psychologist(BaseModel):
 
 
 class Patient(BaseModel):
+    id:  Optional[int]
     first_name: str
     last_name: str
     gender: str
@@ -91,11 +97,44 @@ class Patient(BaseModel):
 
 
 class Depressive_Disorder(BaseModel):
+    id:  Optional[int]
     name: str
     description: str
     symptom: str
     treatment: str
 
+    class Config:
+        orm_mode = True
+
+
+class Pregunta_Base(BaseModel):
+    id:  Optional[int]
+    description: str
+
+    class Config:
+        orm_mode = True
+
+
+class Test(BaseModel):
+    id:  Optional[int]
+    date: datetime
+    patient_id: int
+    psychologist_id: int
+    observation: str
+    is_active: bool
+    
+    class Config:
+        orm_mode = True
+
+
+class Pregunta_Test(BaseModel):
+    id:  Optional[int]
+    date: datetime
+    test_id: Test
+    pregunta_base_id: Pregunta_Base
+    rpta: str
+    is_active: bool
+    
     class Config:
         orm_mode = True
 

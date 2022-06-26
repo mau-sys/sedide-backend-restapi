@@ -1,10 +1,12 @@
 
+from datetime import date
 from unicodedata import name
 from sqlalchemy import update
 from sqlalchemy.orm import Session
 
 #from . import models, schemas
-import models, schemas
+import models
+import schemas
 
 '''
 def get_user(db: Session, user_id: int):
@@ -45,6 +47,7 @@ def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
 
 #   Role CRUD
 
+
 def create_role(db: Session, role: schemas.Role):
     db_role = models.Role(title=role.title)
     db.add(db_role)
@@ -52,11 +55,14 @@ def create_role(db: Session, role: schemas.Role):
     db.refresh(db_role)
     return db_role
 
+
 def get_role(db: Session, role_id: int):
     return db.query(models.Role).filter(models.Role.id == role_id).first()
 
+
 def get_roles(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Role).offset(skip).limit(limit).all()
+
 
 def update_role(db: Session, role_id: int, updated_fields: schemas.Role):
     db.execute(
@@ -68,24 +74,30 @@ def update_role(db: Session, role_id: int, updated_fields: schemas.Role):
     db.commit()
     return updated_fields
 
+
 def delete_role(db: Session, role: schemas.Role):
     db.delete(role)
     db.commit()
 
 #   User CRUD
 
-def create_user(db: Session, user: schemas.User, role_id: int):
-    db_user = models.User(username=user.username, password=user.password, role_id=role_id)
+
+def create_user(db: Session, user: schemas.User):
+    db_user = models.User(username=user.username,
+                          password=user.password, role_id=user.role_id)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
     return db_user
 
+
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
+
 def get_users(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.User).offset(skip).limit(limit).all()
+
 
 def update_user(db: Session, user_id: int, updated_fields: schemas.User):
     db.execute(
@@ -97,28 +109,33 @@ def update_user(db: Session, user_id: int, updated_fields: schemas.User):
     db.commit()
     return updated_fields
 
+
 def delete_user(db: Session, user: schemas.User):
     db.delete(user)
     db.commit()
 
 #   Psychologist CRUD
 
-def create_psychologist(db: Session, psychologist: schemas.Psychologist, user_id: int):
+
+def create_psychologist(db: Session, psychologist: schemas.Psychologist):
     db_psychologist = models.Psychologist(
-        first_name=psychologist.first_name, 
+        first_name=psychologist.first_name,
         last_name=psychologist.last_name,
         email=psychologist.email,
-        user_id=user_id)
+        user_id=psychologist.user_id)
     db.add(db_psychologist)
     db.commit()
     db.refresh(db_psychologist)
     return db_psychologist
 
+
 def get_psychologist(db: Session, psychologist_id: int):
     return db.query(models.Psychologist).filter(models.Psychologist.id == psychologist_id).first()
 
+
 def get_psychologists(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Psychologist).offset(skip).limit(limit).all()
+
 
 def update_psychologist(db: Session, psychologist_id: int, updated_fields: schemas.Psychologist):
     db.execute(
@@ -130,6 +147,7 @@ def update_psychologist(db: Session, psychologist_id: int, updated_fields: schem
     db.commit()
     return updated_fields
 
+
 def delete_psychologist(db: Session, psychologist: schemas.Psychologist):
     db.delete(psychologist)
     db.commit()
@@ -137,9 +155,9 @@ def delete_psychologist(db: Session, psychologist: schemas.Psychologist):
 
 #   Patient CRUD
 
-def create_patient(db: Session, patient: schemas.Patient, user_id: int,psychologist_id: int):
+def create_patient(db: Session, patient: schemas.Patient):
     db_patient = models.Patient(
-        first_name=patient.first_name, 
+        first_name=patient.first_name,
         last_name=patient.last_name,
         gender=patient.gender,
         age=patient.age,
@@ -147,18 +165,21 @@ def create_patient(db: Session, patient: schemas.Patient, user_id: int,psycholog
         birthplace=patient.birthplace,
         phone=patient.phone,
         email=patient.email,
-        user_id=user_id,
-        psychologist_id=psychologist_id)
+        user_id=patient.user_id,
+        psychologist_id=patient.psychologist_id)
     db.add(db_patient)
     db.commit()
     db.refresh(db_patient)
     return db_patient
 
+
 def get_patient(db: Session, patient_id: int):
     return db.query(models.Patient).filter(models.Patient.id == patient_id).first()
 
+
 def get_patients(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Patient).offset(skip).limit(limit).all()
+
 
 def update_patient(db: Session, patient_id: int, updated_fields: schemas.Patient):
     db.execute(
@@ -170,11 +191,13 @@ def update_patient(db: Session, patient_id: int, updated_fields: schemas.Patient
     db.commit()
     return updated_fields
 
+
 def delete_patient(db: Session, patient: schemas.Patient):
     db.delete(patient)
     db.commit()
 
 #   Depressive_Disorder CRUD
+
 
 def create_depressive_disorder(db: Session, depressive_disorder: schemas.Depressive_Disorder):
     db_depressive_disorder = models.Depressive_Disorder(
@@ -187,11 +210,14 @@ def create_depressive_disorder(db: Session, depressive_disorder: schemas.Depress
     db.refresh(db_depressive_disorder)
     return db_depressive_disorder
 
+
 def get_depressive_disorder(db: Session, depressive_disorder_id: int):
     return db.query(models.Depressive_Disorder).filter(models.Depressive_Disorder.id == depressive_disorder_id).first()
 
+
 def get_depressive_disorders(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Depressive_Disorder).offset(skip).limit(limit).all()
+
 
 def update_depressive_disorder(db: Session, depressive_disorder_id: int, updated_fields: schemas.Depressive_Disorder):
     db.execute(
@@ -203,14 +229,89 @@ def update_depressive_disorder(db: Session, depressive_disorder_id: int, updated
     db.commit()
     return updated_fields
 
+
 def delete_depressive_disorder(db: Session, depressive_disorder: schemas.Depressive_Disorder):
     db.delete(depressive_disorder)
     db.commit()
 
 
-#   Diagnostic_Report 
+#   Pregunta Base CRUD
 
-def create_diagnostic_report(db: Session, diagnostic_report: schemas.Diagnostic_Report, psychologist_id: int, patient_id: int, depressive_disorder_id: int):
+def create_pregunta_base(db: Session, pregunta_base: schemas.Pregunta_Base):
+    db_pregunta_base = models.Pregunta_Base(
+        description=pregunta_base.description)
+    db.add(db_pregunta_base)
+    db.commit()
+    db.refresh(db_pregunta_base)
+    return db_pregunta_base
+
+
+def get_pregunta_base(db: Session, pregunta_base_id: int):
+    return db.query(models.Pregunta_Base).filter(models.Pregunta_Base.id == pregunta_base_id).first()
+
+
+def get_preguntas_base(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Pregunta_Base).offset(skip).limit(limit).all()
+
+
+'''def update_pregunta_base(db: Session, depressive_disorder_id: int, updated_fields: schemas.Depressive_Disorder):
+    db.execute(
+        update(models.Depressive_Disorder)
+        .where(models.Depressive_Disorder.id == depressive_disorder_id)
+        .values(updated_fields.dict(exclude_unset=True))
+    )
+    db.flush()
+    db.commit()
+    return updated_fields'''
+
+
+def delete_pregunta_base(db: Session, pregunta_base: schemas.Pregunta_Base):
+    db.delete(pregunta_base)
+    db.commit()
+
+#   Test CRUD
+
+
+def create_test(db: Session, test: schemas.Test):
+    db_test = models.Test(
+        date=test.date,
+        patient_id=test.patient_id,
+        psychologist_id=test.psychologist_id,
+        observation=test.observation,
+        is_active=test.is_active)
+    db.add(db_test)
+    db.commit()
+    db.refresh(db_test)
+    return db_test
+
+
+def get_test(db: Session, test_id: int):
+    return db.query(models.Test).filter(models.Test.id == test_id).first()
+
+
+def get_tests(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Test).offset(skip).limit(limit).all()
+
+
+'''def update_test(db: Session, depressive_disorder_id: int, updated_fields: schemas.Depressive_Disorder):
+    db.execute(
+        update(models.Depressive_Disorder)
+        .where(models.Depressive_Disorder.id == depressive_disorder_id)
+        .values(updated_fields.dict(exclude_unset=True))
+    )
+    db.flush()
+    db.commit()
+    return updated_fields'''
+
+
+def delete_test(db: Session, test: schemas.Test):
+    db.delete(test)
+    db.commit()
+
+#   Diagnostic_Report
+
+
+'''def create_diagnostic_report(db: Session, diagnostic_report: schemas.Diagnostic_Report, psychologist_id: int, patient_id: int, depressive_disorder_id: int):
     db_diagnostic_report = models.Diagnostic_Report(
         psychologist_id=psychologist_id, 
         patient_id=patient_id,
@@ -238,5 +339,4 @@ def update_diagnostic_report(db: Session, diagnostic_report_id: int, updated_fie
 
 def delete_diagnostic_report(db: Session, diagnostic_report: schemas.Diagnostic_Report):
     db.delete(diagnostic_report)
-    db.commit()
-
+    db.commit()'''
