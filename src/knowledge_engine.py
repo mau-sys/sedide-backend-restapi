@@ -189,6 +189,168 @@ class DiagnosisOfDepressiveDisorder(KnowledgeEngine):
         print("Depresión distimia moderado")
     
 
+    @Rule(Fact(action="find_depressive_disorder"), 
+        Fact(question_1="si"), 
+        Fact(question_2="si"), 
+        Fact(question_3="si"), 
+        Fact(question_4="si"), 
+        Fact(question_5="si"), 
+        Fact(question_6="si"), 
+        Fact(question_7="si"), 
+        Fact(question_8="si"), 
+        Fact(question_9="si"), 
+        Fact(question_10="si"),
+        Fact(question_11="si"),
+        Fact(question_12="si"),
+        Fact(question_13="si"),
+        Fact(question_14="si"))
+    def disorder_4(self):
+        self.declare(Fact(disorder="Depresión Distimia Grave"))
+        print("Depresión Distimia Grave")
+
+
+    @Rule(Fact(action="find_depressive_disorder"), 
+        Fact(question_11="si"), 
+        Fact(question_12="si"), 
+        Fact(question_13="si"), 
+        Fact(question_14="si"))
+    def disorder_5(self):
+        self.declare(Fact(disorder="Depresión Distimia Grave"))
+        print("Depresión Distimia Grave")
+
+
+    @Rule(Fact(action="find_depressive_disorder"), 
+        Fact(question_3="si"), 
+        Fact(question_15="si"), 
+        Fact(question_16="si"), 
+        Fact(question_19="si"))
+    def disorder_6(self):
+        self.declare(Fact(disorder="Depresión Mayor Leve"))
+        print("Depresión Mayor Leve")
+
+
+    @Rule(Fact(action="find_depressive_disorder"), 
+        Fact(question_3="si"), 
+        Fact(question_15="si"), 
+        Fact(question_16="si"), 
+        Fact(question_18="si"),
+        Fact(question_19="si"),
+        Fact(question_20="si"))
+    def disorder_7(self):
+        self.declare(Fact(disorder="Depresión Mayor Moderado"))
+        print("Depresión Mayor Moderado")
+
+
+    @Rule(Fact(action="find_depressive_disorder"), 
+        Fact(question_18="si"),
+        Fact(question_20="si"))
+    def disorder_8(self):
+        self.declare(Fact(disorder="Depresión Mayor Moderado"))
+        print("Depresión Mayor Moderado")
+
+
+    @Rule(Fact(action="find_depressive_disorder"), 
+        Fact(question_3="si"), 
+        Fact(question_6="si"), 
+        Fact(question_11="si"), 
+        Fact(question_15="si"),
+        Fact(question_16="si"),
+        Fact(question_17="si"),
+        Fact(question_18="si"),
+        Fact(question_19="si"),
+        Fact(question_20="si"),
+        Fact(question_21="si"),
+        Fact(question_22="si"))
+    def disorder_9(self):
+        self.declare(Fact(disorder="Depresión Mayor Grave"))
+        print("Depresión Mayor Grave")
+
+
+    @Rule(Fact(action="find_depressive_disorder"), 
+        Fact(question_6="si"),
+        Fact(question_11="si"),
+        Fact(question_17="si"),
+        Fact(question_21="si"),
+        Fact(question_22="si"))
+    def disorder_10(self):
+        self.declare(Fact(disorder="Depresión Mayor Grave"))
+        print("Depresión Mayor Grave")
+
+
+    @Rule(Fact(action="find_depressive_disorder"), 
+        Fact(question_7="si"),
+        Fact(question_9="si"),
+        Fact(question_23="si"),
+        Fact(question_24="si"),
+        Fact(question_25="si"))
+    def disorder_11(self):
+        self.declare(Fact(disorder="Depresión Neurótica Moderado"))
+        print("Depresión Neurótica Moderado")
+
+
+    @Rule(Fact(action="find_depressive_disorder"), 
+        Fact(question_7="si"),
+        Fact(question_9="si"),
+        Fact(question_23="si"),
+        Fact(question_24="si"),
+        Fact(question_25="si"),
+        Fact(question_26="si"),
+        Fact(question_27="si"))
+    def disorder_12(self):
+        self.declare(Fact(disorder="Depresión Neurótica Grave"))
+        print("Depresión Neurótica Grave")
+
+
+    @Rule(Fact(action="find_depressive_disorder"), 
+        Fact(question_26="si"),
+        Fact(question_27="si"))
+    def disorder_13(self):
+        self.declare(Fact(disorder="Depresión Neurótica Grave"))
+        print("Depresión Neurótica Grave")
+
+
+    @Rule(Fact(action="find_depressive_disorder"), 
+        Fact(question_28="si"),
+        Fact(question_29="si"),
+        Fact(question_30="si"),
+        Fact(question_31="si"),
+        Fact(question_32="si"))
+    def disorder_14(self):
+        self.declare(Fact(disorder="Depresión Existencial"))
+        print("Depresión Existencial")
+
+
+    @Rule(Fact(action="find_depressive_disorder"), 
+        Fact(question_22="si"),
+        Fact(question_33="si"),
+        Fact(question_34="si"),
+        Fact(question_35="si"),
+        Fact(question_36="si"))
+    def disorder_15(self):
+        self.declare(Fact(disorder="Depresión Psicótica"))
+        print("Depresión Psicótica")
+
+
+    @Rule(Fact(action="find_depressive_disorder"), 
+        Fact(question_2="si"),
+        Fact(question_3="si"),
+        Fact(question_4="si"),
+        Fact(question_5="si"),
+        Fact(question_6="si"),
+        Fact(question_9="si"),
+        Fact(question_15="si"),
+        Fact(question_27="si"),
+        Fact(question_37="si"))
+    def disorder_16(self):
+        self.declare(Fact(disorder="Depresión Endógena"))
+        print("Depresión Endógena")
+
+
+
+    
+
+
+
 engine = DiagnosisOfDepressiveDisorder()
 engine.reset()
 engine.run()

@@ -308,7 +308,67 @@ def delete_test(db: Session, test: schemas.Test):
     db.delete(test)
     db.commit()
 
-#   Diagnostic_Report
+#   Pregunta test CRUD
+
+def create_pregunta_test(db: Session, pregunta_test: schemas.Pregunta_Test):
+    db_pregunta_test = models.Pregunta_Test(
+        date=pregunta_test.date,
+        test_id=pregunta_test.test_id,
+        pregunta_base_id=pregunta_test.pregunta_base_id,
+        rpta=pregunta_test.rpta,
+        is_active=pregunta_test.is_active)
+    db.add(db_pregunta_test)
+    db.commit()
+    db.refresh(db_pregunta_test)
+    return db_pregunta_test
+
+
+def get_pregunta_test(db: Session, pregunta_test_id: int):
+    return db.query(models.Pregunta_Test).filter(models.Pregunta_Test.id == pregunta_test_id).first()
+
+
+def get_pregunta_tests(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Pregunta_Test).offset(skip).limit(limit).all()
+
+def delete_pregunta_test(db: Session, pregunta_test: schemas.Pregunta_Test):
+    db.delete(pregunta_test)
+    db.commit()
+
+
+#   Diagnostic_Report   CRUD
+
+
+
+def create_diagnostic_report(db: Session, diagnostic_report: schemas.Diagnostic_Report):
+    db_diagnostic_report = models.Diagnostic_Report(
+        date=diagnostic_report.date,
+        test_id=diagnostic_report.test_id,
+        depressive_disorder_id=diagnostic_report.depressive_disorder_id)
+    db.add(db_diagnostic_report)
+    db.commit()
+    db.refresh(db_diagnostic_report)
+    return db_diagnostic_report
+
+
+def get_diagnostic_report(db: Session, diagnostic_report_id: int):
+    return db.query(models.Diagnostic_Report).filter(models.Diagnostic_Report.id == diagnostic_report_id).first()
+
+
+def get_diagnostic_reports(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Diagnostic_Report).offset(skip).limit(limit).all()
+
+def delete_diagnostic_report(db: Session, diagnostic_report: schemas.Diagnostic_Report):
+    db.delete(diagnostic_report)
+    db.commit()
+
+
+
+
+
+
+
+
+# anterior diagnostic report
 
 
 '''def create_diagnostic_report(db: Session, diagnostic_report: schemas.Diagnostic_Report, psychologist_id: int, patient_id: int, depressive_disorder_id: int):

@@ -99,10 +99,13 @@ class Test(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     date = Column(DateTime, default=datetime.now())
-    patient_id = Column(Integer, ForeignKey("patient.id"))
-    psychologist_id = Column(Integer, ForeignKey("psychologist.id"))
     observation = Column(String(900))
     is_active = Column(Boolean, default=True)
+
+    patient_id = Column(Integer, ForeignKey("patient.id"))
+    psychologist_id = Column(Integer, ForeignKey("psychologist.id"))
+
+
     diagnostic_reports = relationship("Diagnostic_Report", backref="test")
     pregunta_tests = relationship("Pregunta_Test", backref="test")
 

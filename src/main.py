@@ -340,8 +340,75 @@ def delete_test(test_id: int, db: Session = Depends(get_db)):
         db, test_id)
     return crud.delete_pregunta_base(db=db, test=test)
 
+
+
+
 # ----------------------------------
-# DIAGNOSTIC REPORT HTTP REQUESTS
+# PREGUNTA_TEST HTTP REQUESTS
+# ----------------------------------
+
+@app.post("/pregunta_test/", response_model=schemas.Pregunta_Test)
+def create_pregunta_test(pregunta_test: schemas.Pregunta_Test, db: Session = Depends(get_db)):
+    return crud.create_pregunta_test(db=db, pregunta_test=pregunta_test)
+
+
+
+@app.get("/pregunta_test/{pregunta_test_id}", response_model=schemas.Pregunta_Test)
+def read_pregunta_test(pregunta_test_id: int, db: Session = Depends(get_db)):
+    pregunta_test = crud.get_pregunta_test(
+        db, pregunta_test_id=pregunta_test_id)
+    return pregunta_test
+
+
+@app.get("/pregunta_tests/", response_model=list[schemas.Pregunta_Test])
+def read_pregunta_tests(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    pregunta_tests = crud.get_pregunta_tests(
+        db, skip=skip, limit=limit)
+    return pregunta_tests
+
+
+@app.delete("/pregunta_test/{pregunta_test_id}")
+def delete_pregunta_test(pregunta_test_id: int, db: Session = Depends(get_db)):
+    pregunta_test = crud.get_pregunta_test(
+        db, pregunta_test_id)
+    return crud.delete_pregunta_test(db=db, pregunta_test=pregunta_test)
+
+
+# ----------------------------------
+# DIAGNOSTIC REPORT
+# ----------------------------------
+
+@app.post("/diagnostic_report/", response_model=schemas.Diagnostic_Report)
+def create_diagnostic_report(diagnostic_report: schemas.Diagnostic_Report, db: Session = Depends(get_db)):
+    return crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
+
+
+
+@app.get("/diagnostic_report/{diagnostic_report_id}", response_model=schemas.Diagnostic_Report)
+def read_diagnostic_report(diagnostic_report_id: int, db: Session = Depends(get_db)):
+    diagnostic_report = crud.get_diagnostic_report(
+        db, diagnostic_report_id=diagnostic_report_id)
+    return diagnostic_report
+
+
+@app.get("/diagnostic_reports/", response_model=list[schemas.Diagnostic_Report])
+def read_diagnostic_reports(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    diagnostic_reports = crud.get_diagnostic_reports(
+        db, skip=skip, limit=limit)
+    return diagnostic_reports
+
+
+@app.delete("/diagnostic_report/{diagnostic_report_id}")
+def delete_diagnostic_report(diagnostic_report_id: int, db: Session = Depends(get_db)):
+    diagnostic_report = crud.get_diagnostic_report(
+        db, diagnostic_report_id)
+    return crud.delete_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
+
+
+
+
+# ----------------------------------
+# DIAGNOSTIC REPORT HTTP REQUESTS ANTERIOR A YOEL
 # ----------------------------------
 
 

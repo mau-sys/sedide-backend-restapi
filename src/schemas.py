@@ -130,8 +130,12 @@ class Test(BaseModel):
 class Pregunta_Test(BaseModel):
     id:  Optional[int]
     date: datetime
-    test_id: Test
-    pregunta_base_id: Pregunta_Base
+    #este TEST lo hizo yoel pero creo que es con int
+    #test_id: Test
+    test_id: int
+    #este pregunta base lo hizo yoel pero creo que es con int
+    #pregunta_base_id: Pregunta_Base
+    pregunta_base_id: int
     rpta: str
     is_active: bool
     
@@ -146,8 +150,14 @@ class Diagnostic_Report(BaseModel):
     #patient_id: Patient
     #depressive_disorder_id: Depressive_Disorder
 
-    psychologist_id: int
-    patient_id: int
+#esto es de yoel pero creo que no estaba bien'''
+    #psychologist_id: int
+    #patient_id: int
+    #depressive_disorder_id: int
+
+    id: Optional[int]
+    date: datetime
+    test_id: int
     depressive_disorder_id: int
 
     class Config:
