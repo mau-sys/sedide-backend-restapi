@@ -162,3 +162,10 @@ class Diagnostic_Report(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+
+class Rptas(BaseModel):
+    rpt1:  str
+    rpt2:  str
+    rpt3:  str

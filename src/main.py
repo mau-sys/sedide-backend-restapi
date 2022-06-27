@@ -9,6 +9,8 @@ import crud
 import models
 import schemas
 from database import SessionLocal, engine
+from knowledge_engine import DiagnosisOfDepressiveDisorder
+
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -404,6 +406,16 @@ def delete_diagnostic_report(diagnostic_report_id: int, db: Session = Depends(ge
         db, diagnostic_report_id)
     return crud.delete_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
 
+
+@app.post("/run/")
+def run_diagnosis(rpta: schemas.Rptas):
+        engine = DiagnosisOfDepressiveDisorder()
+        engine.symptom_1(rpta.rpt1)
+        engine.symptom_2(rpta.rpt2)
+        
+        engine.disorder_1()
+        '''engine.reset()
+        return engine.run()'''
 
 
 

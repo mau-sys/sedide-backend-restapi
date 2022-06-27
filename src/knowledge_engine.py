@@ -4,9 +4,8 @@ from experta import *
 # Variables
 #----------
 
-
-
 class DiagnosisOfDepressiveDisorder(KnowledgeEngine):
+
     @DefFacts()
     def _initial_action(self):
         print("This is expert system do you have some of the next symptoms?")
@@ -15,15 +14,20 @@ class DiagnosisOfDepressiveDisorder(KnowledgeEngine):
     #---------------------------------------------------------------------
     # Symptom questions and y/n answers
     #---------------------------------------------------------------------
+    
+        
 
     @Rule(Fact(action='find_depressive_disorder'), NOT(Fact(question_1=W())), salience=37)
-    def symptom_1(self):
+    def symptom_1(self, rpta):
         print("1. ¿Estás deprimido (a) por alguna situación de tu vida?")
-        self.declare(Fact(question_1 = input("Respuesta: ")))
+        self.declare(Fact(question_1 = rpta))
+        print("rpta1: "+ rpta)
     
     @Rule(Fact(action='find_depressive_disorder'), NOT(Fact(question_2=W())), salience=36)
-    def symptom_2(self):
-        self.declare(Fact(question_2 = input("2. ¿Tienes muy poco sueño?: ")))
+    def symptom_2(self, rpta):
+        print("2. ¿Tienes muy poco sueño?: ")
+        self.declare(Fact(question_2 = rpta))
+        print("rpta2: "+ rpta)
     
     @Rule(Fact(action='find_depressive_disorder'), NOT(Fact(question_3=W())), salience=35)
     def symptom_3(self):
@@ -347,13 +351,7 @@ class DiagnosisOfDepressiveDisorder(KnowledgeEngine):
 
 
 
-    
 
-
-
-engine = DiagnosisOfDepressiveDisorder()
-engine.reset()
-engine.run()
 
 
     #---------------------------------------------------------------------
