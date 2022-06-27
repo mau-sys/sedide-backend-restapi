@@ -169,3 +169,37 @@ class Rptas(BaseModel):
     rpt1:  str
     rpt2:  str
     rpt3:  str
+    rpt4: str
+    rpt5: str
+    rpt6: str
+    rpt7: str
+    rpt8: str
+    rpt9: str
+    rpt10: str
+    rpt11: str
+    rpt12: str
+    rpt13: str
+    rpt14: str
+    rpt15: str
+    rpt16: str
+    rpt17: str
+    rpt18: str
+    rpt19: str
+    rpt20: str
+    rpt21: str
+    rpt22: str
+    rpt23: str
+    rpt24: str
+    rpt25: str
+    rpt26: str
+    rpt27: str
+    rpt28: str
+    rpt29: str
+    rpt30: str
+    rpt31: str
+    rpt32: str
+    rpt33: str
+    rpt34: str
+    rpt35: str
+    rpt36: str
+    rpt37: str
