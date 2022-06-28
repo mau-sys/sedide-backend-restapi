@@ -203,3 +203,4 @@ class Rptas(BaseModel):
     rpt35: str
     rpt36: str
     rpt37: str
+    test_id: int

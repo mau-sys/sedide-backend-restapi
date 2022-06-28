@@ -104,8 +104,7 @@ class Test(Base):
 
     patient_id = Column(Integer, ForeignKey("patient.id"))
     psychologist_id = Column(Integer, ForeignKey("psychologist.id"))
-
-
+    '''patient = relationship('Patient', primaryjoin='Patient.id==Patient.', remote_side='Patient.id', uselist=False)'''
     diagnostic_reports = relationship("Diagnostic_Report", backref="test")
     pregunta_tests = relationship("Pregunta_Test", backref="test")
 

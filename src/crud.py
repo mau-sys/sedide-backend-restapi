@@ -94,6 +94,9 @@ def create_user(db: Session, user: schemas.User):
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
+def get_userByCredenciales(db: Session, username: str, password: str):
+    return db.query(models.User).filter(models.User.username == username, models.User.password == password).first()
+
 
 def get_users(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.User).offset(skip).limit(limit).all()
@@ -131,6 +134,10 @@ def create_psychologist(db: Session, psychologist: schemas.Psychologist):
 
 def get_psychologist(db: Session, psychologist_id: int):
     return db.query(models.Psychologist).filter(models.Psychologist.id == psychologist_id).first()
+
+
+def get_psychologistByUser(db: Session, user_id: int):
+    return db.query(models.Psychologist).filter(models.Psychologist.user_id == user_id).first()
 
 
 def get_psychologists(db: Session, skip: int = 0, limit: int = 100):
@@ -179,6 +186,9 @@ def get_patient(db: Session, patient_id: int):
 
 def get_patients(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Patient).offset(skip).limit(limit).all()
+
+def get_patientByUser(db: Session, user_id: int):
+    return db.query(models.Patient).filter(models.Patient.user_id == user_id).first()
 
 
 def update_patient(db: Session, patient_id: int, updated_fields: schemas.Patient):
@@ -292,6 +302,9 @@ def get_test(db: Session, test_id: int):
 def get_tests(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Test).offset(skip).limit(limit).all()
 
+def get_testsActiveByUser(patient_id: int, db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Test).filter(models.Test.patient_id == patient_id and models.Test.is_active == 1).offset(skip).limit(limit).all()
+
 
 '''def update_test(db: Session, depressive_disorder_id: int, updated_fields: schemas.Depressive_Disorder):
     db.execute(
@@ -356,6 +369,9 @@ def get_diagnostic_report(db: Session, diagnostic_report_id: int):
 
 def get_diagnostic_reports(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Diagnostic_Report).offset(skip).limit(limit).all()
+
+def get_diagnostic_reportsByTestId(test_id: int, db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Diagnostic_Report).filter(models.Diagnostic_Report.test_id == test_id).offset(skip).limit(limit).all()
 
 def delete_diagnostic_report(db: Session, diagnostic_report: schemas.Diagnostic_Report):
     db.delete(diagnostic_report)

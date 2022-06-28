@@ -1,7 +1,10 @@
 from cgi import test
+from datetime import datetime
+import email
 from fastapi import Depends, FastAPI, HTTPException
+from sqlalchemy import null
 from sqlalchemy.orm import Session
-
+from fastapi.middleware.cors import CORSMiddleware
 #from . import crud, models, schemas
 #from .database import SessionLocal, engine
 
@@ -16,7 +19,19 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
+origins = [
+    "http://localhost",
+    "http://localhost:8080",
+    "http://localhost:4200",
+]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 # Dependency
 def get_db():
     db = SessionLocal()
@@ -117,6 +132,12 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     return user
 
 
+@app.get("/findUserByCredenciales/{username}/{password}", response_model=schemas.User)
+def read_user(username: str,password: str, db: Session = Depends(get_db)):
+    user = crud.get_userByCredenciales(db, username=username, password=password)
+    return user
+
+
 @app.get("/users/", response_model=list[schemas.User])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users = crud.get_users(db, skip=skip, limit=limit)
@@ -154,6 +175,13 @@ def delete_user(user_id: int, db: Session = Depends(get_db)):
 def read_psychologist(psychologist_id: int, db: Session = Depends(get_db)):
     db_psychologist = crud.get_psychologist(
         db, psychologist_id=psychologist_id)
+    return db_psychologist
+
+
+@app.get("/psychologistByUser_id/{user_id}", response_model=schemas.Psychologist)
+def read_psychologist(user_id: int, db: Session = Depends(get_db)):
+    db_psychologist = crud.get_psychologistByUser(
+        db, user_id=user_id)
     return db_psychologist
 
 
@@ -201,6 +229,16 @@ def read_patients(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
     patients = crud.get_patients(db, skip=skip, limit=limit)
     return patients
 
+@app.get("/patientByUser_id/{user_id}", response_model=schemas.Psychologist)
+def get_patientByUser(user_id: int, db: Session = Depends(get_db)):
+    db_patients = crud.get_patientByUser(
+        db, user_id=user_id)
+    return db_patients
+
+@app.get("/patientByUser_id/{user_id}", response_model=schemas.Patient)
+def read_patient(user_id: int, db: Session = Depends(get_db)):
+    patient = crud.get_patientByUser(db, user_id=user_id)
+    return patient
 
 @app.post("/patient", response_model=schemas.Patient)
 def create_patient(patient: schemas.Patient, db: Session = Depends(get_db)):
@@ -322,6 +360,12 @@ def read_tests(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return tests
 
 
+@app.get("/testsActiveByUser/{patient_id}", response_model=list[schemas.Test])
+def read_testsActiveByUser(patient_id: int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    tests = crud.get_testsActiveByUser(patient_id,
+        db, skip=skip, limit=limit)
+    return tests
+
 @app.post("/test/", response_model=schemas.Test)
 def create_test(test: schemas.Test, db: Session = Depends(get_db)):
     return crud.create_test(db=db, test=test)
@@ -399,6 +443,12 @@ def read_diagnostic_reports(skip: int = 0, limit: int = 100, db: Session = Depen
         db, skip=skip, limit=limit)
     return diagnostic_reports
 
+@app.get("/diagnostic_reportsByTest/{test_id}", response_model=list[schemas.Diagnostic_Report])
+def read_diagnostic_reportsByTestId(test_id: int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    diagnostic_reports = crud.get_diagnostic_reportsByTestId(test_id,
+        db, skip=skip, limit=limit)
+    return diagnostic_reports
+
 
 @app.delete("/diagnostic_report/{diagnostic_report_id}")
 def delete_diagnostic_report(diagnostic_report_id: int, db: Session = Depends(get_db)):
@@ -408,7 +458,7 @@ def delete_diagnostic_report(diagnostic_report_id: int, db: Session = Depends(ge
 
 
 @app.post("/run/")
-def run_diagnosis(rpta: schemas.Rptas):
+def run_diagnosis(rpta: schemas.Rptas,db: Session = Depends(get_db)):
         engine = DiagnosisOfDepressiveDisorder()
         engine.symptom_1(rpta.rpt1)
         engine.symptom_2(rpta.rpt2)
@@ -448,44 +498,87 @@ def run_diagnosis(rpta: schemas.Rptas):
         engine.symptom_36(rpta.rpt36)
         engine.symptom_37(rpta.rpt37)
 
-        
-        engine.disorder_1()
+
+        response = engine.disorder_1()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=1,)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
+
+        response = engine.disorder_2()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=2)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
+
+        response = engine.disorder_3()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=3)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
+
+        response = engine.disorder_4()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=4)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
+
+        response = engine.disorder_5()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=5)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report) 
+
+        response = engine.disorder_6()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=6)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)     
+
+        response = engine.disorder_7()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=7)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)    
+
+        response = engine.disorder_8()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=8)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)   
+
+        response = engine.disorder_9()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=9)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)   
+
+
+        response = engine.disorder_10()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=10)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)   
+
+        response = engine.disorder_11()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=11)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)  
+
+        response = engine.disorder_12()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=12)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)   
+
+        response = engine.disorder_13()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=13)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)   
+
+        response = engine.disorder_14()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=14)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)   
+
+        response = engine.disorder_15()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=15)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)   
+
+        response = engine.disorder_16()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=16)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)   
+
         '''engine.reset()
         return engine.run()'''
-
-
-
-# ----------------------------------
-# DIAGNOSTIC REPORT HTTP REQUESTS ANTERIOR A YOEL
-# ----------------------------------
-
-
-'''@app.get("/diagnostic_reports/{diagnostic_report_id}", response_model=schemas.Diagnostic_Report)
-def read_diagnostic_report(diagnostic_report_id: int, db: Session = Depends(get_db)):
-    diagnostic_report = crud.get_psychologist(db, diagnostic_report_id=diagnostic_report_id)
-    return diagnostic_report
-
-@app.get("/diagnostic_reports/", response_model=list[schemas.Diagnostic_Report])
-def read_diagnostic_reports(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    diagnostic_reports = crud.get_diagnostic_reports(db, skip=skip, limit=limit)
-    return diagnostic_reports
-
-@app.post("/diagnostic_reports/{psychologist_id}/{patient_id}/{depressive_disorder_id}", response_model=schemas.Diagnostic_Report)
-def create_diagnostic_report(diagnostic_report: schemas.Diagnostic_Report, psychologist_id: int, patient_id: int, depressive_disorder_id: int, db: Session = Depends(get_db)):
-    #db_role = crud.get_user_by_email(db, email=user.email)
-    #role = crud.get_role(db, role_id=role_id)
-    return crud.create_patient(db=db, diagnostic_report=diagnostic_report, psychologist_id=psychologist_id, patient_id=patient_id, depressive_disorder_id=depressive_disorder_id)
-
-@app.patch("/diagnostic_reports/{diagnostic_report_id}", response_model = schemas.Diagnostic_Report)
-def update_diagnostic_report(
-    diagnostic_report_id: int,
-    updated_fields: schemas.Patient,
-    db: Session = Depends(get_db),
-):
-    return crud.update_diagnostic_report(db, diagnostic_report_id, updated_fields)
-
-@app.delete("/diagnostic_reports/{diagnostic_report_id}")
-def delete_diagnostic_report(diagnostic_report_id: int, db: Session = Depends(get_db)):
-    diagnostic_report = crud.get_diagnostic_report(db, diagnostic_report_id)
-    return crud.delete_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
-'''
