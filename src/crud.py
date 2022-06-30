@@ -1,7 +1,7 @@
 
 from datetime import date
 from unicodedata import name
-from sqlalchemy import update
+from sqlalchemy import false, true, update
 from sqlalchemy.orm import Session
 
 #from . import models, schemas
@@ -240,6 +240,17 @@ def update_depressive_disorder(db: Session, depressive_disorder_id: int, updated
     return updated_fields
 
 
+def update_test_Cancelar(db: Session, test_id: int, updated_fields: schemas.Test):
+    db.execute(
+        update(models.Test)
+        .where(models.Test.id == test_id)
+        .values(updated_fields.dict(exclude_unset=True))
+    )
+    db.flush()
+    db.commit()
+    return updated_fields
+
+
 def delete_depressive_disorder(db: Session, depressive_disorder: schemas.Depressive_Disorder):
     db.delete(depressive_disorder)
     db.commit()
@@ -303,7 +314,11 @@ def get_tests(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Test).offset(skip).limit(limit).all()
 
 def get_testsActiveByUser(patient_id: int, db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Test).filter(models.Test.patient_id == patient_id and models.Test.is_active == 1).offset(skip).limit(limit).all()
+    return db.query(models.Test).filter(models.Test.is_active == 1 and models.Test.patient_id == patient_id  ).offset(skip).limit(limit).all()
+
+
+def get_testsInactiveByUser(patient_id: int, db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Test).filter( models.Test.is_active == 0 and models.Test.patient_id == patient_id ).offset(skip).limit(limit).all()
 
 
 '''def update_test(db: Session, depressive_disorder_id: int, updated_fields: schemas.Depressive_Disorder):

@@ -287,15 +287,6 @@ def create_depressive_disorder(depressive_disorder: schemas.Depressive_Disorder,
     return crud.create_depressive_disorder(db=db, depressive_disorder=depressive_disorder)
 
 
-@app.patch("/depressive_disorder/{depressive_disorder_id}", response_model=schemas.Depressive_Disorder)
-def update_depressive_disorder(
-    depressive_disorder_id: int,
-    updated_fields: schemas.Depressive_Disorder,
-    db: Session = Depends(get_db),
-):
-    return crud.update_depressive_disorder(db, depressive_disorder_id, updated_fields)
-
-
 @app.delete("/depressive_disorder/{depressive_disorder_id}")
 def delete_depressive_disorder(depressive_disorder_id: int, db: Session = Depends(get_db)):
     depressive_disorder = crud.get_depressive_disorder(
@@ -324,15 +315,6 @@ def read_preguntas_base(skip: int = 0, limit: int = 100, db: Session = Depends(g
 @app.post("/pregunta_base/", response_model=schemas.Pregunta_Base)
 def create_pregunta_base(pregunta_base: schemas.Pregunta_Base, db: Session = Depends(get_db)):
     return crud.create_pregunta_base(db=db, pregunta_base=pregunta_base)
-
-
-'''@app.patch("/pregunta_base/{pregunta_base}", response_model=schemas.Depressive_Disorder)
-def update_pregunta_base(
-    depressive_disorder_id: int,
-    updated_fields: schemas.Depressive_Disorder,
-    db: Session = Depends(get_db),
-):
-    return crud.update_depressive_disorder(db, depressive_disorder_id, updated_fields)'''
 
 
 @app.delete("/pregunta_base/{pregunta_base_id}")
@@ -366,18 +348,25 @@ def read_testsActiveByUser(patient_id: int, skip: int = 0, limit: int = 100, db:
         db, skip=skip, limit=limit)
     return tests
 
+
+@app.get("/testsInactivoByUser/{patient_id}", response_model=list[schemas.Test])
+def read_testsActiveByUser(patient_id: int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    tests = crud.get_testsInactiveByUser(patient_id,
+        db, skip=skip, limit=limit)
+    return tests
+
 @app.post("/test/", response_model=schemas.Test)
 def create_test(test: schemas.Test, db: Session = Depends(get_db)):
     return crud.create_test(db=db, test=test)
 
 
-'''@app.patch("/test/{test}", response_model=schemas.Depressive_Disorder)
+@app.patch("/test/{test_id}", response_model=schemas.Test)
 def update_test(
-    depressive_disorder_id: int,
-    updated_fields: schemas.Depressive_Disorder,
+    test_id: int,
+    updated_fields: schemas.Test,
     db: Session = Depends(get_db),
 ):
-    return crud.update_depressive_disorder(db, depressive_disorder_id, updated_fields)'''
+    return crud.update_test_Cancelar(db, test_id, updated_fields)
 
 
 @app.delete("/test/{test_id}")
@@ -497,88 +486,9 @@ def run_diagnosis(rpta: schemas.Rptas,db: Session = Depends(get_db)):
         engine.symptom_35(rpta.rpt35)
         engine.symptom_36(rpta.rpt36)
         engine.symptom_37(rpta.rpt37)
-
-
-        response = engine.disorder_1()
-        if(response!=null):
-            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=1,)
-            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
-
-        response = engine.disorder_2()
-        if(response!=null):
-            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=2)
-            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
-
-        response = engine.disorder_3()
-        if(response!=null):
-            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=3)
-            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
-
-        response = engine.disorder_4()
-        if(response!=null):
-            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=4)
-            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
-
-        response = engine.disorder_5()
-        if(response!=null):
-            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=5)
-            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report) 
-
-        response = engine.disorder_6()
-        if(response!=null):
-            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=6)
-            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)     
-
-        response = engine.disorder_7()
-        if(response!=null):
-            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=7)
-            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)    
-
-        response = engine.disorder_8()
-        if(response!=null):
-            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=8)
-            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)   
-
-        response = engine.disorder_9()
-        if(response!=null):
-            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=9)
-            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)   
-
-
-        response = engine.disorder_10()
-        if(response!=null):
-            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=10)
-            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)   
-
-        response = engine.disorder_11()
-        if(response!=null):
-            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=11)
-            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)  
-
-        response = engine.disorder_12()
-        if(response!=null):
-            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=12)
-            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)   
-
-        response = engine.disorder_13()
-        if(response!=null):
-            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=13)
-            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)   
-
-        response = engine.disorder_14()
-        if(response!=null):
-            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=14)
-            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)   
-
-        response = engine.disorder_15()
-        if(response!=null):
-            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=15)
-            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)   
-
-        response = engine.disorder_16()
-        if(response!=null):
-            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=16)
-            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)   
-
+ 
+        engine.disorder_1()
+        engine.disorder_2()
+        '''AÑADIR LOS OTROS'''
         '''engine.reset()
         return engine.run()'''

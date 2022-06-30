@@ -15,7 +15,7 @@ class DiagnosisOfDepressiveDisorder(KnowledgeEngine):
     # Symptom questions and y/n answers
     #---------------------------------------------------------------------
     
-        
+    def iniciar(self, rpta):{}
 
     @Rule(Fact(action='find_depressive_disorder'), NOT(Fact(question_1=W())), salience=37)
     def symptom_1(self, rpta):
@@ -260,7 +260,7 @@ class DiagnosisOfDepressiveDisorder(KnowledgeEngine):
     @Rule(Fact(action="find_depressive_disorder"), Fact(question_1="si"), Fact(question_2="si"), Fact(question_3="si"), Fact(question_4="si"), Fact(question_5="si"), Fact(question_6="si"), Fact(question_7="si"), Fact(question_8="si"), Fact(question_9="si"), Fact(question_10="si"))
     def disorder_3(self):
         self.declare(Fact(disorder="Depresión distimia moderado"))
-        print("Depresión distimia moderado")
+        return("Depresión distimia moderado")
     
 
     @Rule(Fact(action="find_depressive_disorder"), 
@@ -280,7 +280,7 @@ class DiagnosisOfDepressiveDisorder(KnowledgeEngine):
         Fact(question_14="si"))
     def disorder_4(self):
         self.declare(Fact(disorder="Depresión Distimia Grave"))
-        print("Depresión Distimia Grave")
+        return("Depresión Distimia Grave")
 
 
     @Rule(Fact(action="find_depressive_disorder"), 
@@ -290,7 +290,7 @@ class DiagnosisOfDepressiveDisorder(KnowledgeEngine):
         Fact(question_14="si"))
     def disorder_5(self):
         self.declare(Fact(disorder="Depresión Distimia Grave"))
-        print("Depresión Distimia Grave")
+        return("Depresión Distimia Grave")
 
 
     @Rule(Fact(action="find_depressive_disorder"), 
@@ -300,7 +300,7 @@ class DiagnosisOfDepressiveDisorder(KnowledgeEngine):
         Fact(question_19="si"))
     def disorder_6(self):
         self.declare(Fact(disorder="Depresión Mayor Leve"))
-        print("Depresión Mayor Leve")
+        return("Depresión Mayor Leve")
 
 
     @Rule(Fact(action="find_depressive_disorder"), 
@@ -312,7 +312,7 @@ class DiagnosisOfDepressiveDisorder(KnowledgeEngine):
         Fact(question_20="si"))
     def disorder_7(self):
         self.declare(Fact(disorder="Depresión Mayor Moderado"))
-        print("Depresión Mayor Moderado")
+        return("Depresión Mayor Moderado")
 
 
     @Rule(Fact(action="find_depressive_disorder"), 
@@ -320,7 +320,7 @@ class DiagnosisOfDepressiveDisorder(KnowledgeEngine):
         Fact(question_20="si"))
     def disorder_8(self):
         self.declare(Fact(disorder="Depresión Mayor Moderado"))
-        print("Depresión Mayor Moderado")
+        return("Depresión Mayor Moderado")
 
 
     @Rule(Fact(action="find_depressive_disorder"), 
@@ -337,7 +337,7 @@ class DiagnosisOfDepressiveDisorder(KnowledgeEngine):
         Fact(question_22="si"))
     def disorder_9(self):
         self.declare(Fact(disorder="Depresión Mayor Grave"))
-        print("Depresión Mayor Grave")
+        return("Depresión Mayor Grave")
 
 
     @Rule(Fact(action="find_depressive_disorder"), 
@@ -348,7 +348,7 @@ class DiagnosisOfDepressiveDisorder(KnowledgeEngine):
         Fact(question_22="si"))
     def disorder_10(self):
         self.declare(Fact(disorder="Depresión Mayor Grave"))
-        print("Depresión Mayor Grave")
+        return("Depresión Mayor Grave")
 
 
     @Rule(Fact(action="find_depressive_disorder"), 
@@ -359,7 +359,7 @@ class DiagnosisOfDepressiveDisorder(KnowledgeEngine):
         Fact(question_25="si"))
     def disorder_11(self):
         self.declare(Fact(disorder="Depresión Neurótica Moderado"))
-        print("Depresión Neurótica Moderado")
+        return("Depresión Neurótica Moderado")
 
 
     @Rule(Fact(action="find_depressive_disorder"), 
@@ -372,7 +372,7 @@ class DiagnosisOfDepressiveDisorder(KnowledgeEngine):
         Fact(question_27="si"))
     def disorder_12(self):
         self.declare(Fact(disorder="Depresión Neurótica Grave"))
-        print("Depresión Neurótica Grave")
+        return("Depresión Neurótica Grave")
 
 
     @Rule(Fact(action="find_depressive_disorder"), 
@@ -380,7 +380,7 @@ class DiagnosisOfDepressiveDisorder(KnowledgeEngine):
         Fact(question_27="si"))
     def disorder_13(self):
         self.declare(Fact(disorder="Depresión Neurótica Grave"))
-        print("Depresión Neurótica Grave")
+        return("Depresión Neurótica Grave")
 
 
     @Rule(Fact(action="find_depressive_disorder"), 
@@ -391,7 +391,7 @@ class DiagnosisOfDepressiveDisorder(KnowledgeEngine):
         Fact(question_32="si"))
     def disorder_14(self):
         self.declare(Fact(disorder="Depresión Existencial"))
-        print("Depresión Existencial")
+        return("Depresión Existencial")
 
 
     @Rule(Fact(action="find_depressive_disorder"), 
@@ -402,7 +402,7 @@ class DiagnosisOfDepressiveDisorder(KnowledgeEngine):
         Fact(question_36="si"))
     def disorder_15(self):
         self.declare(Fact(disorder="Depresión Psicótica"))
-        print("Depresión Psicótica")
+        return("Depresión Psicótica")
 
 
     @Rule(Fact(action="find_depressive_disorder"), 
@@ -417,10 +417,8 @@ class DiagnosisOfDepressiveDisorder(KnowledgeEngine):
         Fact(question_37="si"))
     def disorder_16(self):
         self.declare(Fact(disorder="Depresión Endógena"))
-        print("Depresión Endógena")
-
-
-
+        return("Depresión Endógena")
+engine = DiagnosisOfDepressiveDisorder()
 
 
 
