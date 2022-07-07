@@ -486,9 +486,87 @@ def run_diagnosis(rpta: schemas.Rptas,db: Session = Depends(get_db)):
         engine.symptom_35(rpta.rpt35)
         engine.symptom_36(rpta.rpt36)
         engine.symptom_37(rpta.rpt37)
- 
-        engine.disorder_1()
-        engine.disorder_2()
+
+        response = engine.disorder_1()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=1,)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
+
+        response = engine.disorder_2()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=1,)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
+
+        response = engine.disorder_3()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=2,)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
+
+        response = engine.disorder_4()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=2,)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
+        
+        response = engine.disorder_5()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=3,)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
+
+        response = engine.disorder_6()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=3,)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
+
+        response = engine.disorder_7()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=3,)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
+
+        response = engine.disorder_8()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=4,)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
+
+        response = engine.disorder_9()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=4,)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
+
+        response = engine.disorder_10()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=4,)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
+
+
+        response = engine.disorder_11()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=5,)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
+
+        response = engine.disorder_12()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=5,)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
+
+        response = engine.disorder_13()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=6,)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
+
+        response = engine.disorder_14()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=6,)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
+
+        response = engine.disorder_15()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=6,)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
+
+        response = engine.disorder_16()
+        if(response!=null):
+            diagnostic_report = schemas.Diagnostic_Report(date=datetime.now(), test_id=rpta.test_id, depressive_disorder_id=5,)
+            crud.create_diagnostic_report(db=db, diagnostic_report=diagnostic_report)
         '''AÑADIR LOS OTROS'''
         '''engine.reset()
         return engine.run()'''

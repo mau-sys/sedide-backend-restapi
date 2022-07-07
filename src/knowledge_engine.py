@@ -250,7 +250,7 @@ class DiagnosisOfDepressiveDisorder(KnowledgeEngine):
     @Rule(Fact(action="find_depressive_disorder"), Fact(question_1="si"), Fact(question_2="si"), Fact(question_3="si"), Fact(question_4="si"), Fact(question_5="si"))
     def disorder_1(self):
         self.declare(Fact(disorder="Depresión distimia leve"))
-        return "Depresión distimia levelll"
+        return "Depresión distimia leve"
 
     @Rule(Fact(action="find_depressive_disorder"), Fact(question_6="si"), Fact(question_7="si"), Fact(question_8="si"), Fact(question_9="si"), Fact(question_10="si"))
     def disorder_2(self):
@@ -418,7 +418,6 @@ class DiagnosisOfDepressiveDisorder(KnowledgeEngine):
     def disorder_16(self):
         self.declare(Fact(disorder="Depresión Endógena"))
         return("Depresión Endógena")
-engine = DiagnosisOfDepressiveDisorder()
 
 
 
